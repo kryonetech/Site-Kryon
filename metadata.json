@@ -1,0 +1,6 @@
+{
+  "name": "Kryon E-Tech",
+  "description": "Website institucional e moderno para a empresa KRYON E-TECH, focado na venda de sistemas, automações, I.A. e PWAs para pequenas empresas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
