@@ -12,6 +12,13 @@ interface ServiceOption {
 
 const serviceOptions: ServiceOption[] = [
   {
+    id: "site",
+    label: "Criação de Sites",
+    description: "Sites institucionais, landing pages de alta conversão e portfólios rápidos totalmente otimizados.",
+    badge: "Presença Online",
+    avgTime: "3-7 dias"
+  },
+  {
     id: "sistema",
     label: "Sistemas sob Medida",
     description: "Plataformas internas exclusivas para gerenciar seu negócio de ponta a ponta.",

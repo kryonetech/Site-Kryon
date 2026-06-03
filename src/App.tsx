@@ -8,7 +8,8 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Solutions from "./components/Solutions";
 import Benefits from "./components/Benefits";
-import Plans from "./components/Plans";
+import CustomSolutions from "./components/CustomSolutions";
+import WebsiteCreation from "./components/WebsiteCreation";
 import SocialProof from "./components/SocialProof";
 import BudgetSimulator from "./components/BudgetSimulator";
 import About from "./components/About";
@@ -27,7 +28,8 @@ export default function App() {
         <SocialProof />
         <Solutions />
         <Benefits />
-        <Plans />
+        <CustomSolutions />
+        <WebsiteCreation />
         
         {/* Interactive Custom Calculator/Form */}
         <BudgetSimulator />

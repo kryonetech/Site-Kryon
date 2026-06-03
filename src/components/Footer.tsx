@@ -68,8 +68,13 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#planos" onClick={(e) => handleScrollToSection(e, "#planos")} className="text-slate-400 hover:text-white transition-colors">
-                  Planos e Valores
+                <a href="#solucoes-sob-medida" onClick={(e) => handleScrollToSection(e, "#solucoes-sob-medida")} className="text-slate-400 hover:text-white transition-colors">
+                  Soluções Sob Medida
+                </a>
+              </li>
+              <li>
+                <a href="#criacao-sites" onClick={(e) => handleScrollToSection(e, "#criacao-sites")} className="text-slate-400 hover:text-white transition-colors">
+                  Criação de Sites
                 </a>
               </li>
             </ul>

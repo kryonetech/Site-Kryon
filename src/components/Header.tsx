@@ -23,7 +23,8 @@ export default function Header() {
     { label: "Início", href: "#" },
     { label: "Soluções", href: "#solucoes" },
     { label: "Benefícios", href: "#beneficios" },
-    { label: "Planos", href: "#planos" },
+    { label: "Desenvolvimento de Aplicativos", href: "#solucoes-sob-medida" },
+    { label: "Criação de Sites", href: "#criacao-sites" },
   ];
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -89,7 +90,7 @@ export default function Header() {
                   key={item.label}
                   href={item.href}
                   onClick={(e) => handleScrollTo(e, item.href)}
-                  className="text-sm font-medium text-slate-300 hover:text-white font-sans transition-colors duration-200 tracking-wide"
+                  className="text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 rounded-full px-4 py-2 font-sans transition-all duration-200 tracking-wide"
                 >
                   {item.label}
                 </a>
