@@ -27,21 +27,26 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
   throw new Error(JSON.stringify(errInfo));
 }
 
-export const createLead = async (leadData: Partial<Lead>) => {
+export const createLead = async (data: Partial<Lead>) => {
   try {
-    console.log("Enviando lead para Firebase:", leadData);
+    console.log("Enviando lead para Firebase:", data);
     const leadsRef = collection(db, 'leads');
     const docRef = await addDoc(leadsRef, {
-      ...leadData,
-      createdAt: serverTimestamp(),
+      nome: data.nome,
+      empresa: data.empresa || "",
+      telefone: data.telefone,
+      email: data.email || "",
+      tipoProjeto: data.tipoProjeto,
+      mensagem: data.mensagem || "",
       status: 'Novo',
       origem: 'Site',
-      ultimoContato: null
+      ultimoContato: null,
+      createdAt: serverTimestamp()
     });
     console.log("Lead salvo com sucesso:", docRef.id);
     return docRef.id;
   } catch (error) {
-    console.error("Erro ao salvar lead no Firebase:", error);
+    console.error("Erro real Firebase:", error);
     handleFirestoreError(error, OperationType.CREATE, 'leads');
   }
 };

@@ -88,8 +88,10 @@ export default function LeadFormModal({ isOpen, onClose, defaultSolution = "" }:
         setFormData({ nome: "", empresa: "", telefone: "", email: "", tipoProjeto: SOLUTION_OPTIONS[0], message: "" } as any);
       }, 5000);
     } catch (error) {
-      console.error(error);
+      console.error("Erro capturado no formulário:", error);
       setStatus("error");
+      // Showing the real error message on screen temporarily for debug
+      setFormError(`Erro ao salvar no Firebase: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 

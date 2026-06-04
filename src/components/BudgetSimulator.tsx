@@ -152,8 +152,8 @@ export default function BudgetSimulator() {
       
       setIsSubmitted(true);
     } catch(err) {
-      console.error(err);
-      setErrorMsg("Erro ao salvar no Firebase. Verifique o console.");
+      console.error("Erro capturado no simulador:", err);
+      setErrorMsg(`Erro ao salvar no Firebase: ${err instanceof Error ? err.message : String(err)}`);
     }
   };
 
