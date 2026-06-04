@@ -3,18 +3,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
+import React, { Suspense } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Solutions from "./components/Solutions";
-import Benefits from "./components/Benefits";
-import CustomSolutions from "./components/CustomSolutions";
-import WebsiteCreation from "./components/WebsiteCreation";
-import SocialProof from "./components/SocialProof";
-import BudgetSimulator from "./components/BudgetSimulator";
-import About from "./components/About";
-import CTA from "./components/CTA";
-import Footer from "./components/Footer";
+
+// Lazy loaded components (Below the fold) to improve initial page load performance
+const Solutions = React.lazy(() => import("./components/Solutions"));
+const Benefits = React.lazy(() => import("./components/Benefits"));
+const CustomSolutions = React.lazy(() => import("./components/CustomSolutions"));
+const WebsiteCreation = React.lazy(() => import("./components/WebsiteCreation"));
+const SocialProof = React.lazy(() => import("./components/SocialProof"));
+const BudgetSimulator = React.lazy(() => import("./components/BudgetSimulator"));
+const About = React.lazy(() => import("./components/About"));
+const CTA = React.lazy(() => import("./components/CTA"));
+const Footer = React.lazy(() => import("./components/Footer"));
 
 export default function App() {
   return (
@@ -25,24 +27,29 @@ export default function App() {
       <main>
         {/* Core Sections */}
         <Hero />
-        <SocialProof />
-        <Solutions />
-        <Benefits />
-        <CustomSolutions />
-        <WebsiteCreation />
         
-        {/* Interactive Custom Calculator/Form */}
-        <BudgetSimulator />
-        
-        {/* Institutional section */}
-        <About />
-        
-        {/* Final Trigger with custom actions */}
-        <CTA />
+        <Suspense fallback={<div className="py-20 flex justify-center items-center"><div className="w-8 h-8 rounded-full border-t-2 border-brand-primary animate-spin"></div></div>}>
+          <SocialProof />
+          <Solutions />
+          <Benefits />
+          <CustomSolutions />
+          <WebsiteCreation />
+          
+          {/* Interactive Custom Calculator/Form */}
+          <BudgetSimulator />
+          
+          {/* Institutional section */}
+          <About />
+          
+          {/* Final Trigger with custom actions */}
+          <CTA />
+        </Suspense>
       </main>
 
       {/* Main Footer contact info */}
-      <Footer />
+      <Suspense fallback={<div className="h-40 bg-brand-surface" />}>
+        <Footer />
+      </Suspense>
     </div>
   );
 }

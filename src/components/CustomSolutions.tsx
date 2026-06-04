@@ -9,23 +9,27 @@ import {
   ArrowDown, 
   Check, 
   Sparkles, 
-  MessageSquare,
+  Mail,
   ChevronDown
 } from "lucide-react";
 
 export default function CustomSolutions() {
-  const getWhatsAppLink = (solutionType: string) => {
-    const defaultPhone = "5511999999999";
-    const text = `Olá KRYON E-TECH! Gostaria de solicitar uma análise de projeto para um desenvolvimento sob medida. Tenho interesse em: *"${solutionType}"*.\n\nComo podemos prosseguir?`;
-    return `https://wa.me/${defaultPhone}?text=${encodeURIComponent(text)}`;
+  const getEmailLink = (solutionType: string) => {
+    const defaultEmail = "contato@kryonetech.com";
+    const subject = `Análise de Projeto - ${solutionType}`;
+    const text = `Olá KRYON E-TECH!\n\nGostaria de solicitar uma análise de projeto para um desenvolvimento sob medida.\n\nTenho interesse em: "${solutionType}".\n\nComo podemos prosseguir?`;
+    return `mailto:${defaultEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
   };
 
-  const getGeneralWhatsAppLink = (messageType: "analise" | "especialista") => {
-    const defaultPhone = "5511999999999";
+  const getGeneralEmailLink = (messageType: "analise" | "especialista") => {
+    const defaultEmail = "contato@kryonetech.com";
+    const subject = messageType === "analise" 
+      ? "Solicitação de Análise de Projeto" 
+      : "Contato com Especialista";
     const text = messageType === "analise"
-      ? "Olá KRYON E-TECH! Gostaria de solicitar uma análise completa de projeto para a minha empresa. Podem me ajudar a desenhar a melhor solução digital?"
-      : "Olá KRYON E-TECH! Gostaria de conversar com um especialista em soluções sob medida para entender o melhor caminho tecnológico para o meu negócio.";
-    return `https://wa.me/${defaultPhone}?text=${encodeURIComponent(text)}`;
+      ? "Olá KRYON E-TECH!\n\nGostaria de solicitar uma análise completa de projeto para a minha empresa. Podem me ajudar a desenhar a melhor solução digital?"
+      : "Olá KRYON E-TECH!\n\nGostaria de conversar com um especialista em soluções sob medida para entender o melhor caminho tecnológico para o meu negócio.";
+    return `mailto:${defaultEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
   };
 
   const solutions = [
@@ -79,7 +83,7 @@ export default function CustomSolutions() {
       desc: "Conectamos os seus sistemas legados para eliminar tarefas manuais e erros operacionais de ponta a ponta.",
       possibleFeatures: [
         "APIs customizadas robustas",
-        "Disparadores avançados de WhatsApp",
+        "Sistemas de Notificação e Disparadores",
         "Sincronização com múltiplos CRMs",
         "Sistemas integrados de ERP",
         "Conexões automáticas com Planilhas",
@@ -192,9 +196,7 @@ export default function CustomSolutions() {
                 </div>
 
                 <a
-                  href={getWhatsAppLink(solution.title)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={getEmailLink(solution.title)}
                   className="w-full mt-auto py-3.5 px-4 rounded-xl font-medium text-xs font-mono uppercase tracking-wider text-slate-300 group-hover:text-white border border-white/[0.08] bg-white/[0.01] hover:bg-brand-primary/20 hover:border-brand-accent/40 flex items-center justify-center gap-2 cursor-pointer transition-all duration-300"
                 >
                   <span>Analisar este escopo</span>
@@ -295,9 +297,7 @@ export default function CustomSolutions() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto relative z-10">
               <a
-                href={getGeneralWhatsAppLink("analise")}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={getGeneralEmailLink("analise")}
                 className="w-full sm:w-auto group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-brand-primary hover:bg-brand-primary/95 text-white font-medium text-sm md:text-base transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(0,102,255,0.4)] cursor-pointer"
               >
                 <span>Solicitar Análise do Projeto</span>
@@ -305,12 +305,10 @@ export default function CustomSolutions() {
               </a>
 
               <a
-                href={getGeneralWhatsAppLink("especialista")}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={getGeneralEmailLink("especialista")}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium text-sm md:text-base transition-all duration-300 hover:scale-[1.02] cursor-pointer"
               >
-                <MessageSquare className="w-4 h-4 text-brand-accent" />
+                <Mail className="w-4 h-4 text-brand-accent" />
                 <span>Falar com Especialista</span>
               </a>
             </div>

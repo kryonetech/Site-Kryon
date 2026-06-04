@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Check, ClipboardList, Send, Sparkles, MessageSquare, ArrowRight, ShieldCheck, HelpCircle } from "lucide-react";
+import { Check, ClipboardList, Send, Sparkles, Mail, ArrowRight, ShieldCheck, HelpCircle } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface ServiceOption {
@@ -108,16 +108,17 @@ export default function BudgetSimulator() {
     setIsSubmitted(false);
   };
 
-  // Generate WhatsApp text link
-  const getWhatsAppLink = () => {
-    const defaultPhone = "5511999999999"; // Default placeholder if real is not requested, or they can copy.
+  // Generate Email proposal link
+  const getEmailLink = () => {
+    const defaultEmail = "contato@kryonetech.com";
     const selectedLabels = serviceOptions
       .filter((s) => selectedServices.includes(s.id))
       .map((s) => s.label)
       .join(", ");
 
-    const text = `Olá KRYON E-TECH! Gostaria de solicitar um orçamento para:\n\n*Serviços Selecionados:* ${selectedLabels}\n*Nome:* ${name}\n*Empresa:* ${company || "Não informado"}\n*Segmento/Porte:* ${businessSize}\n*E-mail:* ${email}\n*Telefone:* ${phone}\n*Mensagem:* ${message || "Nenhuma mensagem adicional."}\n\nVi esse detalhamento no Simulador do site e gostaria de bater um papo!`;
-    return `https://wa.me/${defaultPhone}?text=${encodeURIComponent(text)}`;
+    const subject = `Solicitação de Orçamento - ${name}`;
+    const body = `Olá KRYON E-TECH!\n\nGostaria de solicitar um orçamento para o meu projeto, conforme simulação no site:\n\nServiços Selecionados: ${selectedLabels}\nNome: ${name}\nEmpresa: ${company || "Não informado"}\nSegmento/Porte: ${businessSize}\nE-mail: ${email}\nTelefone: ${phone}\nMensagem: ${message || "Nenhuma mensagem adicional."}\n\nNo aguardo do retorno para conversarmos sobre os detalhes!`;
+    return `mailto:${defaultEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -255,7 +256,7 @@ export default function BudgetSimulator() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono text-slate-400 uppercase tracking-wider mb-2"> WhatsApp / Telefone * </label>
+                    <label className="block text-xs font-mono text-slate-400 uppercase tracking-wider mb-2"> Telefone de Contato * </label>
                     <input
                       type="tel"
                       required
@@ -273,7 +274,7 @@ export default function BudgetSimulator() {
                     rows={2}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Ex: Quero organizar minhas vendas no WhatsApp e enviar relatórios direto para o meu notebook."
+                    placeholder="Ex: Quero organizar as vendas da empresa e enviar relatórios direto para o meu notebook."
                     className="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 font-sans resize-none"
                   />
                 </div>
@@ -343,13 +344,11 @@ export default function BudgetSimulator() {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
-                  href={getWhatsAppLink()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-950/20 active:scale-98"
+                  href={getEmailLink()}
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-lg bg-brand-primary hover:bg-brand-primary/95 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-blue-950/20 active:scale-98"
                 >
-                  <MessageSquare className="w-4 h-4 fill-current" />
-                  <span>Enviar via WhatsApp</span>
+                  <Mail className="w-4 h-4" />
+                  <span>Enviar por E-mail</span>
                 </a>
                 <button
                   onClick={resetForm}

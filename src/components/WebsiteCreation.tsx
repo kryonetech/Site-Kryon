@@ -1,18 +1,20 @@
 import React from "react";
-import { Check, ArrowRight, Sparkles, Shield, Rocket, Flame, MessageSquare, Database, Smartphone, Globe, Layers } from "lucide-react";
+import { Check, ArrowRight, Sparkles, Shield, Rocket, Flame, Mail, Database, Smartphone, Globe, Layers } from "lucide-react";
 import { motion } from "motion/react";
 
 export default function WebsiteCreation() {
-  const getWhatsAppLink = (planName: string) => {
-    const defaultPhone = "5511999999999";
-    const text = `Olá KRYON E-TECH! Tenho interesse no serviço de Criação de Sites para a minha empresa. Gostaria de receber um orçamento para o *"${planName}"*.\n\nAguardo retorno para conversarmos sobre o meu projeto!`;
-    return `https://wa.me/${defaultPhone}?text=${encodeURIComponent(text)}`;
+  const getEmailLink = (planName: string) => {
+    const defaultEmail = "contato@kryonetech.com";
+    const subject = `Orçamento - ${planName}`;
+    const text = `Olá KRYON E-TECH!\n\nTenho interesse no serviço de Criação de Sites para a minha empresa. Gostaria de receber um orçamento para o "${planName}".\n\nAguardo retorno para conversarmos sobre o meu projeto!`;
+    return `mailto:${defaultEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
   };
 
-  const getGeneralWhatsAppLink = () => {
-    const defaultPhone = "5511999999999";
-    const text = `Olá KRYON E-TECH! Gostaria de falar com um especialista sobre a Criação de um Site Profissional para minha empresa. Podem me passar mais detalhes?`;
-    return `https://wa.me/${defaultPhone}?text=${encodeURIComponent(text)}`;
+  const getGeneralEmailLink = () => {
+    const defaultEmail = "contato@kryonetech.com";
+    const subject = "Orçamento de Criação de Site";
+    const text = `Olá KRYON E-TECH!\n\nGostaria de falar com um especialista sobre a Criação de um Site Profissional para minha empresa. Podem me passar mais detalhes?`;
+    return `mailto:${defaultEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
   };
 
   const creativePlans = [
@@ -25,7 +27,7 @@ export default function WebsiteCreation() {
       features: [
         "Site institucional",
         "Página inicial moderna",
-        "Botão de WhatsApp",
+        "Botão de Atendimento Rápido",
         "Design responsivo",
         "SEO básico",
         "Formulário de contato"
@@ -43,7 +45,7 @@ export default function WebsiteCreation() {
         "Site com múltiplas páginas",
         "Página de serviços",
         "Página sobre a empresa",
-        "Integração com WhatsApp",
+        "Integração com Canais de Contato",
         "Formulários personalizados",
         "Otimização para celular",
         "Design premium"
@@ -179,16 +181,14 @@ export default function WebsiteCreation() {
                 </div>
 
                 <a
-                  href={getWhatsAppLink(plan.name)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={getEmailLink(plan.name)}
                   className={`w-full py-4 px-4 rounded-xl font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
                     plan.popular
                       ? "bg-brand-primary hover:bg-brand-primary/90 text-white shadow-[0_0_20px_rgba(0,102,255,0.45)] hover:shadow-[0_0_30px_rgba(0,102,255,0.65)] hover:scale-[1.02] active:scale-[0.98]"
                       : "bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:border-brand-accent/30 hover:scale-[1.01] active:scale-[0.98]"
                   }`}
                 >
-                  <MessageSquare className="w-4 h-4 fill-current" />
+                  <Mail className="w-4 h-4" />
                   <span>{plan.ctaLabel}</span>
                 </a>
               </motion.div>
@@ -241,9 +241,7 @@ export default function WebsiteCreation() {
             </p>
 
             <a
-              href={getGeneralWhatsAppLink()}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={getGeneralEmailLink()}
               className="group inline-flex items-center justify-center gap-3 px-8 py-4.5 rounded-xl bg-brand-primary hover:bg-brand-primary/95 text-white font-medium text-base transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(0,102,255,0.4)] relative z-10 cursor-pointer"
             >
               <span>Solicitar orçamento agora</span>

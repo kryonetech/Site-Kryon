@@ -41,6 +41,10 @@ export default function Footer() {
               Desenvolvemos sistemas web, aplicações PWA responsivas, automações inteligentes de processos e soluções de inteligência artificial de alta performance.
             </p>
             
+            <p className="text-sm font-semibold text-slate-200">
+              Inteligência Artificial &bull; Aplicativos PWA &bull; Sistemas Empresariais &bull; Automação
+            </p>
+
             <div className="text-xs font-mono text-brand-primary font-medium tracking-wider uppercase">
               Tecnologia sem limites.
             </div>
@@ -88,33 +92,16 @@ export default function Footer() {
             
             <ul className="space-y-5 text-sm font-sans">
               <li className="flex items-center gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-green-500 group-hover:bg-green-500/10 transition-colors">
-                  <MessageSquare className="w-4 h-4 fill-current" />
-                </div>
-                <div>
-                  <div className="text-xs font-medium text-slate-500 mb-0.5">WhatsApp Comercial</div>
-                  <a
-                    href="https://wa.me/5511999999999?text=Olá+KRYON+E-TECH!+Gostaria+de+um+orçamento."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white hover:text-green-400 font-mono transition-colors"
-                  >
-                    +55 11 99999-9999
-                  </a>
-                </div>
-              </li>
-
-              <li className="flex items-center gap-4 group">
                 <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-brand-primary group-hover:bg-brand-primary/10 transition-colors">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
                   <div className="text-xs font-medium text-slate-500 mb-0.5">Contato corporativo</div>
                   <a
-                    href="mailto:contato@kryonetech.com.br"
+                    href="mailto:contato@kryonetech.com"
                     className="text-white hover:text-brand-primary font-mono transition-colors"
                   >
-                    contato@kryonetech.com.br
+                    contato@kryonetech.com
                   </a>
                 </div>
               </li>
