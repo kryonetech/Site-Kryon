@@ -36,3 +36,40 @@ export interface ContactFormData {
   needs: string[];
   message: string;
 }
+
+export interface Lead {
+  id?: string;
+  createdAt: any;
+  nome: string;
+  empresa?: string;
+  telefone: string;
+  email?: string;
+  tipoProjeto: string;
+  mensagem: string;
+  status: 'Novo' | 'Em Análise' | 'Contato Realizado' | 'Proposta Enviada' | 'Negociação' | 'Fechado' | 'Perdido';
+  origem: 'Site' | 'WhatsApp' | 'Facebook' | 'Instagram' | 'Google' | 'Indicação' | 'Outro';
+  ultimoContato?: any;
+}
+
+export interface Project {
+  id?: string;
+  createdAt: any;
+  leadId?: string;
+  nomeProjeto: string;
+  cliente: string;
+  descricao: string;
+  valor: number;
+  status: 'Planejamento' | 'Desenvolvimento' | 'Teste' | 'Homologação' | 'Entregue' | 'Suporte';
+  dataInicio?: any;
+  previsaoEntrega?: any;
+}
+
+export interface User {
+  id?: string;
+  createdAt: any;
+  nome: string;
+  email: string;
+  cargo: string;
+  role: 'admin' | 'vendas' | 'operacao';
+  ativo: boolean;
+}

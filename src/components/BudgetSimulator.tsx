@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Check, ClipboardList, Send, Sparkles, Mail, ArrowRight, ShieldCheck, HelpCircle } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { createLead } from "../services/leadService";
 
 interface ServiceOption {
   id: string;
@@ -62,6 +63,15 @@ const serviceOptions: ServiceOption[] = [
   }
 ];
 
+const formatPhoneNumber = (value: string): string => {
+  const digits = value.replace(/\D/g, "");
+  if (digits.length === 0) return "";
+  if (digits.length <= 2) return `(${digits}`;
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+};
+
 export default function BudgetSimulator() {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [businessSize, setBusinessSize] = useState<string>("MEI / Microempresa");
@@ -81,8 +91,16 @@ export default function BudgetSimulator() {
     }
   };
 
-  const handleCalculate = (e: React.FormEvent) => {
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setPhone(formatted);
+    setErrorMsg("");
+  };
+
+  const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg("");
+
     if (!name || !email || !phone) {
       setErrorMsg("Por favor, preencha nome, e-mail e telefone para continuar.");
       return;
@@ -91,10 +109,52 @@ export default function BudgetSimulator() {
       setErrorMsg("Selecione pelo menos 1 solução desejada para o seu projeto.");
       return;
     }
-    setErrorMsg("");
+
+    // Name Validation: ONLY letters
+    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
+    if (!nameRegex.test(name.trim())) {
+      setErrorMsg("O campo Nome do Contato deve conter apenas letras.");
+      return;
+    }
+
+    // Email Validation: Must have @ and valid structure
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email.trim())) {
+      setErrorMsg("Por favor, insira um e-mail válido (contendo '@' e domínio).");
+      return;
+    }
+
+    // Phone Validation: Min length for DDD + Number
+    const digits = phone.replace(/\D/g, "");
+    if (digits.length < 10) {
+      setErrorMsg("O telefone de contato deve conter o DDD e pelo menos 10 ou 11 números, ex: (41) 99999-9999.");
+      return;
+    }
     
-    // Simulating form submission or generating WhatsApp request link
-    setIsSubmitted(true);
+    try {
+      const selectedLabels = serviceOptions
+        .filter((s) => selectedServices.includes(s.id))
+        .map((s) => s.label)
+        .join(", ");
+        
+      const leadData = {
+        nome: name,
+        empresa: company || businessSize,
+        telefone: phone,
+        email,
+        tipoProjeto: "Simulador: " + selectedLabels,
+        mensagem: message,
+        origem: "Site",
+        status: "Novo"
+      };
+
+      await createLead(leadData as any);
+      
+      setIsSubmitted(true);
+    } catch(err) {
+      console.error(err);
+      setErrorMsg("Erro ao salvar no Firebase. Verifique o console.");
+    }
   };
 
   const resetForm = () => {
@@ -106,19 +166,6 @@ export default function BudgetSimulator() {
     setCompany("");
     setMessage("");
     setIsSubmitted(false);
-  };
-
-  // Generate Email proposal link
-  const getEmailLink = () => {
-    const defaultEmail = "contato@kryonetech.com";
-    const selectedLabels = serviceOptions
-      .filter((s) => selectedServices.includes(s.id))
-      .map((s) => s.label)
-      .join(", ");
-
-    const subject = `Solicitação de Orçamento - ${name}`;
-    const body = `Olá KRYON E-TECH!\n\nGostaria de solicitar um orçamento para o meu projeto, conforme simulação no site:\n\nServiços Selecionados: ${selectedLabels}\nNome: ${name}\nEmpresa: ${company || "Não informado"}\nSegmento/Porte: ${businessSize}\nE-mail: ${email}\nTelefone: ${phone}\nMensagem: ${message || "Nenhuma mensagem adicional."}\n\nNo aguardo do retorno para conversarmos sobre os detalhes!`;
-    return `mailto:${defaultEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -261,7 +308,7 @@ export default function BudgetSimulator() {
                       type="tel"
                       required
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={handlePhoneChange}
                       placeholder="(11) 99999-9999"
                       className="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 font-sans"
                     />
@@ -311,11 +358,14 @@ export default function BudgetSimulator() {
               </div>
 
               <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
-                Simulação Concluída com Sucesso!
+                Simulação Enviada com Sucesso! ✨
               </h3>
-              <p className="text-cyan-400 text-sm font-semibold mb-6">
-                Montamos um pré-escopo focado no melhor custo-benefício.
+              <p className="text-cyan-400 text-sm font-semibold mb-4">
+                Montamos um pré-escopo focado no melhor custo-benefício para você.
               </p>
+              <div className="text-slate-300 text-xs sm:text-sm max-w-md mx-auto mb-6 bg-cyan-950/20 border border-cyan-500/20 px-4 py-3 rounded-lg leading-relaxed">
+                🚀 <strong>Fique atento(a) ao seu celular!</strong> Em poucos instantes, nossa equipe de engenharia e negócios entrará em contato direto para detalhar esta proposta sob medida.
+              </div>
 
               <div className="max-w-md mx-auto bg-slate-950/80 border border-slate-800/85 rounded-xl p-5 mb-8 text-left leading-relaxed">
                 <div className="text-[11px] font-mono text-slate-500 uppercase tracking-widest mb-3 border-b border-slate-900 pb-2">
@@ -343,13 +393,6 @@ export default function BudgetSimulator() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a
-                  href={getEmailLink()}
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-lg bg-brand-primary hover:bg-brand-primary/95 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-blue-950/20 active:scale-98"
-                >
-                  <Mail className="w-4 h-4" />
-                  <span>Enviar por E-mail</span>
-                </a>
                 <button
                   onClick={resetForm}
                   className="w-full sm:w-auto px-6 py-3.5 rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 font-semibold text-sm transition-all cursor-pointer active:scale-98"

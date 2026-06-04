@@ -12,25 +12,10 @@ import {
   Mail,
   ChevronDown
 } from "lucide-react";
+import { useLeadModal } from "../LeadModalContext";
 
 export default function CustomSolutions() {
-  const getEmailLink = (solutionType: string) => {
-    const defaultEmail = "contato@kryonetech.com";
-    const subject = `Análise de Projeto - ${solutionType}`;
-    const text = `Olá KRYON E-TECH!\n\nGostaria de solicitar uma análise de projeto para um desenvolvimento sob medida.\n\nTenho interesse em: "${solutionType}".\n\nComo podemos prosseguir?`;
-    return `mailto:${defaultEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
-  };
-
-  const getGeneralEmailLink = (messageType: "analise" | "especialista") => {
-    const defaultEmail = "contato@kryonetech.com";
-    const subject = messageType === "analise" 
-      ? "Solicitação de Análise de Projeto" 
-      : "Contato com Especialista";
-    const text = messageType === "analise"
-      ? "Olá KRYON E-TECH!\n\nGostaria de solicitar uma análise completa de projeto para a minha empresa. Podem me ajudar a desenhar a melhor solução digital?"
-      : "Olá KRYON E-TECH!\n\nGostaria de conversar com um especialista em soluções sob medida para entender o melhor caminho tecnológico para o meu negócio.";
-    return `mailto:${defaultEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
-  };
+  const { openModal } = useLeadModal();
 
   const solutions = [
     {
@@ -195,13 +180,13 @@ export default function CustomSolutions() {
                   </ul>
                 </div>
 
-                <a
-                  href={getEmailLink(solution.title)}
+                <button
+                  onClick={() => openModal(solution.title)}
                   className="w-full mt-auto py-3.5 px-4 rounded-xl font-medium text-xs font-mono uppercase tracking-wider text-slate-300 group-hover:text-white border border-white/[0.08] bg-white/[0.01] hover:bg-brand-primary/20 hover:border-brand-accent/40 flex items-center justify-center gap-2 cursor-pointer transition-all duration-300"
                 >
                   <span>Analisar este escopo</span>
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                </a>
+                </button>
               </motion.div>
             );
           })}
@@ -296,21 +281,21 @@ export default function CustomSolutions() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto relative z-10">
-              <a
-                href={getGeneralEmailLink("analise")}
+              <button
+                onClick={() => openModal("Outro")}
                 className="w-full sm:w-auto group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-brand-primary hover:bg-brand-primary/95 text-white font-medium text-sm md:text-base transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(0,102,255,0.4)] cursor-pointer"
               >
                 <span>Solicitar Análise do Projeto</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
+              </button>
 
-              <a
-                href={getGeneralEmailLink("especialista")}
+              <button
+                onClick={() => openModal("Outro")}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium text-sm md:text-base transition-all duration-300 hover:scale-[1.02] cursor-pointer"
               >
                 <Mail className="w-4 h-4 text-brand-accent" />
                 <span>Falar com Especialista</span>
-              </a>
+              </button>
             </div>
           </motion.div>
         </div>

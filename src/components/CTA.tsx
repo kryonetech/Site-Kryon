@@ -1,8 +1,11 @@
 import React from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
+import { useLeadModal } from "../LeadModalContext";
 
 export default function CTA() {
+  const { openModal } = useLeadModal();
+
   return (
     <section className="relative py-32 px-4 bg-brand-bg overflow-hidden border-t border-white/5">
       {/* Dynamic Backgrounds */}
@@ -28,7 +31,7 @@ export default function CTA() {
 
           <button
             onClick={() => {
-              document.querySelector("#simulador")?.scrollIntoView({ behavior: "smooth" });
+              openModal("Outro");
             }}
             className="group relative inline-flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-white text-brand-bg font-medium text-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:text-brand-primary cursor-pointer"
           >

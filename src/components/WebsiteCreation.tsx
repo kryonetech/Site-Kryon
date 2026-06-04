@@ -1,21 +1,10 @@
 import React from "react";
 import { Check, ArrowRight, Sparkles, Shield, Rocket, Flame, Mail, Database, Smartphone, Globe, Layers } from "lucide-react";
 import { motion } from "motion/react";
+import { useLeadModal } from "../LeadModalContext";
 
 export default function WebsiteCreation() {
-  const getEmailLink = (planName: string) => {
-    const defaultEmail = "contato@kryonetech.com";
-    const subject = `Orçamento - ${planName}`;
-    const text = `Olá KRYON E-TECH!\n\nTenho interesse no serviço de Criação de Sites para a minha empresa. Gostaria de receber um orçamento para o "${planName}".\n\nAguardo retorno para conversarmos sobre o meu projeto!`;
-    return `mailto:${defaultEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
-  };
-
-  const getGeneralEmailLink = () => {
-    const defaultEmail = "contato@kryonetech.com";
-    const subject = "Orçamento de Criação de Site";
-    const text = `Olá KRYON E-TECH!\n\nGostaria de falar com um especialista sobre a Criação de um Site Profissional para minha empresa. Podem me passar mais detalhes?`;
-    return `mailto:${defaultEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
-  };
+  const { openModal } = useLeadModal();
 
   const creativePlans = [
     {
@@ -180,8 +169,8 @@ export default function WebsiteCreation() {
                   </ul>
                 </div>
 
-                <a
-                  href={getEmailLink(plan.name)}
+                <button
+                  onClick={() => openModal("Site Institucional")}
                   className={`w-full py-4 px-4 rounded-xl font-medium text-sm transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
                     plan.popular
                       ? "bg-brand-primary hover:bg-brand-primary/90 text-white shadow-[0_0_20px_rgba(0,102,255,0.45)] hover:shadow-[0_0_30px_rgba(0,102,255,0.65)] hover:scale-[1.02] active:scale-[0.98]"
@@ -190,7 +179,7 @@ export default function WebsiteCreation() {
                 >
                   <Mail className="w-4 h-4" />
                   <span>{plan.ctaLabel}</span>
-                </a>
+                </button>
               </motion.div>
             );
           })}
@@ -240,13 +229,13 @@ export default function WebsiteCreation() {
               Fale com a KRYON E-TECH e receba uma proposta personalizada de acordo com a necessidade do seu negócio.
             </p>
 
-            <a
-              href={getGeneralEmailLink()}
+            <button
+              onClick={() => openModal("Site Institucional")}
               className="group inline-flex items-center justify-center gap-3 px-8 py-4.5 rounded-xl bg-brand-primary hover:bg-brand-primary/95 text-white font-medium text-base transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(0,102,255,0.4)] relative z-10 cursor-pointer"
             >
               <span>Solicitar orçamento agora</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </button>
           </motion.div>
         </div>
 

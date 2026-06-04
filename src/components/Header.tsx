@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import Logo from "./Logo";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { useLeadModal } from "../LeadModalContext";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { openModal } = useLeadModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,16 +54,7 @@ export default function Header() {
   const handleBudgetClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsOpen(false);
-    const target = document.querySelector("#simulador");
-    if (target) {
-      const headerOffset = 80;
-      const elementPosition = target.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
+    openModal("Outro");
   };
 
   return (
