@@ -3,10 +3,10 @@ import { Users, Code2, Clock, Star } from "lucide-react";
 import { motion } from "motion/react";
 
 const stats = [
-  { label: "Projetos Entregues", value: "200+", icon: Code2 },
-  { label: "Sistemas Desenvolvidos", value: "85+", icon: Users },
-  { label: "Horas Automatizadas/Mês", value: "50k+", icon: Clock },
-  { label: "Satisfação dos Clientes", value: "99%", icon: Star },
+  { label: "Entrega Ágil", value: "Velocidade", icon: Clock },
+  { label: "Apps Modulares", value: "Escaláveis", icon: Code2 },
+  { label: "Você Sonha", value: "Realizamos", icon: Star },
+  { label: "Foco no Cliente", value: "Dedicado", icon: Users },
 ];
 
 export default function SocialProof() {

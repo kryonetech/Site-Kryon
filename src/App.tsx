@@ -13,7 +13,6 @@ const Solutions = React.lazy(() => import("./components/Solutions"));
 const Benefits = React.lazy(() => import("./components/Benefits"));
 const CustomSolutions = React.lazy(() => import("./components/CustomSolutions"));
 const WebsiteCreation = React.lazy(() => import("./components/WebsiteCreation"));
-const SocialProof = React.lazy(() => import("./components/SocialProof"));
 const BudgetSimulator = React.lazy(() => import("./components/BudgetSimulator"));
 const About = React.lazy(() => import("./components/About"));
 const CTA = React.lazy(() => import("./components/CTA"));
@@ -33,7 +32,6 @@ function PublicLayout() {
         <Hero />
         
         <Suspense fallback={<div className="py-20 flex justify-center items-center"><div className="w-8 h-8 rounded-full border-t-2 border-brand-primary animate-spin"></div></div>}>
-          <SocialProof />
           <Solutions />
           <Benefits />
           <CustomSolutions />
