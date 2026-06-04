@@ -26,8 +26,10 @@ export default function ProtectedAdminRoute({ children }: { children: React.Reac
               // Fallback to internal list if collection fails but email matches
               setIsAuthenticated(true);
             }
-          } catch (error) {
-            console.error('Error fetching admin record:', error);
+          } catch (error: any) {
+            if (error?.code !== 'permission-denied') {
+              console.error('Error fetching admin record:', error);
+            }
             // Fallback: allow if in ALLOWED_EMAILS
             setIsAuthenticated(true);
           }

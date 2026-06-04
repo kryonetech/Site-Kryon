@@ -37,8 +37,10 @@ export const getClientes = async (): Promise<Cliente[]> => {
       id: doc.id,
       ...doc.data()
     } as Cliente));
-  } catch (error) {
-    console.error("Erro ao buscar clientes:", error);
+  } catch (error: any) {
+    if (error?.code !== 'permission-denied') {
+      console.error("Erro ao buscar clientes:", error);
+    }
     // Ignore error in view for now
     return [];
   }
@@ -70,8 +72,10 @@ export const getClientStats = async () => {
     return {
       clientesAtivos: ativosSnapshot.data().count
     };
-  } catch (error) {
-    console.error("Erro ao buscar stats de clientes:", error);
+  } catch (error: any) {
+    if (error?.code !== 'permission-denied') {
+      console.error("Erro ao buscar stats de clientes:", error);
+    }
     return { clientesAtivos: 0 };
   }
 };

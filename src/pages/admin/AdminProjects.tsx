@@ -15,6 +15,7 @@ export default function AdminProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
+  const [permissionError, setPermissionError] = useState(false);
   
   // New project form state
   const [newProject, setNewProject] = useState({
@@ -31,10 +32,15 @@ export default function AdminProjects() {
   const fetchProjects = async () => {
     try {
       setLoading(true);
+      setPermissionError(false);
       const data = await getProjects();
       setProjects(data);
-    } catch(err) {
-      console.error(err);
+    } catch(err: any) {
+      if (err.message && err.message.includes('permission-denied')) {
+        setPermissionError(true);
+      } else {
+        console.error(err);
+      }
     } finally {
       setLoading(false);
     }
@@ -124,7 +130,17 @@ export default function AdminProjects() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
-              {loading ? (
+              {permissionError ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-8 text-center">
+                    <div className="inline-flex bg-amber-500/10 border border-amber-500/20 text-amber-500 p-4 rounded-xl text-left gap-3 max-w-2xl w-full">
+                      <div className="font-semibold text-sm">
+                        Permissão Negada. Atualize as regras do Firestore no Console do Firebase (Firestore Database &gt; Rules) para prosseguir.
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ) : loading ? (
                 <tr>
                   <td colSpan={5} className="px-6 py-8 text-center text-slate-500">
                     Carregando projetos...

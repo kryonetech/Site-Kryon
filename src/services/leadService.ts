@@ -18,12 +18,18 @@ interface FirestoreErrorInfo {
 }
 
 export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const isPermissionDenied = (error as any)?.code === 'permission-denied';
+  
   const errInfo: FirestoreErrorInfo = {
     error: error instanceof Error ? error.message : String(error),
     operationType,
     path
   }
-  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  
+  if (!isPermissionDenied) {
+    console.error('Firestore Error: ', JSON.stringify(errInfo));
+  }
+  
   throw new Error(JSON.stringify(errInfo));
 }
 
@@ -132,8 +138,10 @@ export const getLeadStats = async () => {
       leadsNovos: novosSnapshot.data().count,
       propostasEnviadas: propostasSnapshot.data().count
     };
-  } catch (error) {
-    console.error("Error fetching stats fallback to 0");
-    return { totalLeads: 0, leadsNovos: 0, propostasEnviadas: 0 };
+  } catch (error: any) {
+    if (error?.code !== 'permission-denied') {
+      console.error("Error fetching admin stats", error);
+    }
+    return { totalLeads: 0, leadsNovos: 0, propostasEnviadas: 0, error };
   }
 };

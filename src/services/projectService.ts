@@ -12,12 +12,18 @@ enum OperationType {
 }
 
 function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const isPermissionDenied = (error as any)?.code === 'permission-denied';
+  
   const errInfo = {
     error: error instanceof Error ? error.message : String(error),
     operationType,
     path
   }
-  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  
+  if (!isPermissionDenied) {
+    console.error('Firestore Error: ', JSON.stringify(errInfo));
+  }
+  
   throw new Error(JSON.stringify(errInfo));
 }
 
@@ -67,8 +73,10 @@ export const getProjectStats = async () => {
       projetosAtivos: totalSnapshot.data().count - entreguesSnapshot.data().count,
       projetosEntregues: entreguesSnapshot.data().count,
     };
-  } catch (error) {
-    console.error("Error fetching project stats returning fallback");
+  } catch (error: any) {
+    if (error?.code !== 'permission-denied') {
+      console.error("Error fetching project stats returning fallback", error);
+    }
     return { projetosAtivos: 0, projetosEntregues: 0 };
   }
 }

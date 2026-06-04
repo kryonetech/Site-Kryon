@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Routes, Route, useNavigate, useLocation } from "react-router";
 import { LayoutDashboard, Users, UserCheck, FolderKanban, LogOut, Menu, X, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
@@ -36,9 +36,13 @@ export default function AdminPanel() {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       // Wait for ProtectedAdminRoute to handle redirect naturally
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      setLoginError("Erro ao fazer login com o Google.");
+      if (error.code === 'auth/unauthorized-domain') {
+        setLoginError("O domínio atual precisa ser autorizado no Firebase (Authentication > Settings > Authorized domains). Adicione: " + window.location.hostname);
+      } else {
+        setLoginError("Erro ao fazer login com o Google.");
+      }
     } finally {
       setIsLoggingIn(false);
     }

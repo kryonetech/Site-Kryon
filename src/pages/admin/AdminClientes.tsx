@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getClientes, updateClienteStatus, updateClienteObservacoes, Cliente } from "../../services/clientService";
+import { getClientes, createCliente, updateClienteStatus, updateClienteObservacoes, Cliente } from "../../services/clientService";
+import { Plus, X } from "lucide-react";
 
 const STATUS_OPTS = [
   "Ativo",
@@ -11,6 +12,18 @@ const STATUS_OPTS = [
 export default function AdminClientes() {
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
+  const [permissionError, setPermissionError] = useState(false);
+  
+  // New client form state
+  const [newClient, setNewClient] = useState({
+    nome: "",
+    empresa: "",
+    telefone: "",
+    email: "",
+    status: "Ativo",
+    observacoes: ""
+  });
 
   useEffect(() => {
     fetchClientes();
@@ -19,10 +32,15 @@ export default function AdminClientes() {
   const fetchClientes = async () => {
     try {
       setLoading(true);
+      setPermissionError(false);
       const data = await getClientes();
       setClientes(data);
-    } catch(err) {
-      console.error(err);
+    } catch(err: any) {
+      if (err.message && err.message.includes('permission-denied')) {
+        setPermissionError(true);
+      } else {
+        console.error(err);
+      }
     } finally {
       setLoading(false);
     }
@@ -48,11 +66,121 @@ export default function AdminClientes() {
     }
   };
 
+  const handleCreateClient = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      await createCliente(newClient);
+      setIsCreating(false);
+      setNewClient({
+        nome: "",
+        empresa: "",
+        telefone: "",
+        email: "",
+        status: "Ativo",
+        observacoes: ""
+      });
+      await fetchClientes();
+    } catch(err) {
+      console.error(err);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-2xl font-bold text-white">Gestão de Clientes</h1>
+        <button
+          onClick={() => setIsCreating(!isCreating)}
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-brand-primary to-brand-secondary text-white rounded-lg hover:shadow-lg hover:shadow-brand-primary/25 transition-all text-sm font-medium w-full sm:w-auto"
+        >
+          {isCreating ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+          {isCreating ? "Cancelar" : "Novo Cliente"}
+        </button>
       </div>
+
+      {isCreating && (
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+          <h2 className="text-lg font-semibold text-white mb-4">Cadastrar Novo Cliente</h2>
+          <form onSubmit={handleCreateClient} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Nome do Cliente *</label>
+                <input
+                  required
+                  type="text"
+                  value={newClient.nome}
+                  onChange={(e) => setNewClient({...newClient, nome: e.target.value})}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary"
+                  placeholder="Nome completo"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Empresa</label>
+                <input
+                  type="text"
+                  value={newClient.empresa}
+                  onChange={(e) => setNewClient({...newClient, empresa: e.target.value})}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary"
+                  placeholder="Nome da empresa"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">E-mail</label>
+                <input
+                  type="email"
+                  value={newClient.email}
+                  onChange={(e) => setNewClient({...newClient, email: e.target.value})}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary"
+                  placeholder="email@empresa.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Telefone / WhatsApp *</label>
+                <input
+                  required
+                  type="tel"
+                  value={newClient.telefone}
+                  onChange={(e) => setNewClient({...newClient, telefone: e.target.value})}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary"
+                  placeholder="(00) 00000-0000"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Status Base</label>
+                <select
+                  value={newClient.status}
+                  onChange={(e) => setNewClient({...newClient, status: e.target.value})}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary appearance-none"
+                >
+                  {STATUS_OPTS.map(opt => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-slate-400 mb-1">Observações Iniciais</label>
+                <textarea
+                  value={newClient.observacoes}
+                  onChange={(e) => setNewClient({...newClient, observacoes: e.target.value})}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary resize-none h-24"
+                  placeholder="Detalhes adicionais sobre o cliente..."
+                />
+              </div>
+            </div>
+            <div className="flex justify-end pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-6 py-2.5 bg-brand-primary text-white rounded-lg hover:bg-brand-primary/90 transition-colors font-medium disabled:opacity-50"
+              >
+                {loading ? "Salvando..." : "Salvar Cliente"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
@@ -67,7 +195,17 @@ export default function AdminClientes() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
-              {loading ? (
+              {permissionError ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-8 text-center">
+                    <div className="inline-flex bg-amber-500/10 border border-amber-500/20 text-amber-500 p-4 rounded-xl text-left gap-3 max-w-2xl w-full">
+                      <div className="font-semibold text-sm">
+                        Permissão Negada. Atualize as regras do Firestore no Console do Firebase (Firestore Database &gt; Rules) para prosseguir.
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ) : loading ? (
                 <tr>
                   <td colSpan={5} className="px-6 py-8 text-center text-slate-500">
                     Carregando clientes...

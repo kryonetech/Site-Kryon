@@ -27,6 +27,7 @@ export default function AdminLeads() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [convertingId, setConvertingId] = useState<string | null>(null);
+  const [permissionError, setPermissionError] = useState(false);
 
   useEffect(() => {
     fetchLeads();
@@ -35,10 +36,15 @@ export default function AdminLeads() {
   const fetchLeads = async () => {
     try {
       setLoading(true);
+      setPermissionError(false);
       const data = await getLeads();
       setLeads(data);
-    } catch(err) {
-      console.error(err);
+    } catch(err: any) {
+      if (err.message && err.message.includes('permission-denied')) {
+        setPermissionError(true);
+      } else {
+        console.error(err);
+      }
     } finally {
       setLoading(false);
     }
@@ -93,7 +99,17 @@ export default function AdminLeads() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
-              {loading ? (
+              {permissionError ? (
+                <tr>
+                  <td colSpan={7} className="px-6 py-8 text-center">
+                    <div className="inline-flex bg-amber-500/10 border border-amber-500/20 text-amber-500 p-4 rounded-xl text-left gap-3 max-w-2xl w-full">
+                      <div className="font-semibold text-sm">
+                        Permissão Negada. Atualize as regras do Firestore no Console do Firebase (Firestore Database &gt; Rules) para prosseguir.
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ) : loading ? (
                 <tr>
                   <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
                     Carregando leads...
