@@ -20,6 +20,7 @@ const CTA = React.lazy(() => import("./components/CTA"));
 const Footer = React.lazy(() => import("./components/Footer"));
 
 const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
+const ProtectedAdminRoute = React.lazy(() => import("./components/admin/ProtectedAdminRoute"));
 
 function PublicLayout() {
   return (
@@ -66,7 +67,9 @@ export default function App() {
           path="/admin/*" 
           element={
             <Suspense fallback={<div className="min-h-screen flex justify-center items-center"><div className="w-8 h-8 rounded-full border-t-2 border-brand-primary animate-spin"></div></div>}>
-              <AdminPanel />
+              <ProtectedAdminRoute>
+                <AdminPanel />
+              </ProtectedAdminRoute>
             </Suspense>
           } 
         />

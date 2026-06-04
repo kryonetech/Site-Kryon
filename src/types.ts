@@ -54,14 +54,17 @@ export interface Lead {
 export interface Project {
   id?: string;
   createdAt: any;
+  clienteId: string;
   leadId?: string;
   nomeProjeto: string;
   cliente: string;
   descricao: string;
-  valor: number;
-  status: 'Planejamento' | 'Desenvolvimento' | 'Teste' | 'Homologação' | 'Entregue' | 'Suporte';
+  tipoProjeto: string;
+  valorEstimado: number;
+  status: 'Planejamento' | 'Desenvolvimento' | 'Teste' | 'Homologação' | 'Entregue' | 'Suporte' | string;
   dataInicio?: any;
   previsaoEntrega?: any;
+  observacoes?: string;
 }
 
 export interface User {

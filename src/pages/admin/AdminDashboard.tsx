@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Users, FileText, CheckCircle, Activity } from "lucide-react";
+import { Users, FileText, CheckCircle, Activity, UserCheck, Send } from "lucide-react";
 import { getLeadStats } from "../../services/leadService";
 import { getProjectStats } from "../../services/projectService";
+import { getClientStats } from "../../services/clientService";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
     totalLeads: 0,
     leadsNovos: 0,
-    propostasEnviadas: 0,
+    clientesAtivos: 0,
     projetosAtivos: 0,
+    propostasEnviadas: 0,
     projetosEntregues: 0
   });
   const [loading, setLoading] = useState(true);
@@ -16,13 +18,15 @@ export default function AdminDashboard() {
   useEffect(() => {
     Promise.all([
       getLeadStats(),
-      getProjectStats()
-    ]).then(([leadStats, projStats]) => {
+      getProjectStats(),
+      getClientStats()
+    ]).then(([leadStats, projStats, clientStats]) => {
       setStats({
         totalLeads: leadStats.totalLeads,
         leadsNovos: leadStats.leadsNovos,
-        propostasEnviadas: 0, // Calculate this appropriately when status logic expands
+        clientesAtivos: clientStats.clientesAtivos,
         projetosAtivos: projStats.projetosAtivos,
+        propostasEnviadas: leadStats.propostasEnviadas,
         projetosEntregues: projStats.projetosEntregues
       });
       setLoading(false);
@@ -35,7 +39,9 @@ export default function AdminDashboard() {
   const cards = [
     { title: "Total de Leads", value: stats.totalLeads, icon: Users, color: "text-blue-500", bg: "bg-blue-500/10" },
     { title: "Leads Novos", value: stats.leadsNovos, icon: Activity, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-    { title: "Projetos Ativos", value: stats.projetosAtivos, icon: FileText, color: "text-purple-500", bg: "bg-purple-500/10" },
+    { title: "Propostas Enviadas", value: stats.propostasEnviadas, icon: Send, color: "text-amber-500", bg: "bg-amber-500/10" },
+    { title: "Clientes Ativos", value: stats.clientesAtivos, icon: UserCheck, color: "text-indigo-500", bg: "bg-indigo-500/10" },
+    { title: "Projetos em Andamento", value: stats.projetosAtivos, icon: FileText, color: "text-purple-500", bg: "bg-purple-500/10" },
     { title: "Projetos Entregues", value: stats.projetosEntregues, icon: CheckCircle, color: "text-cyan-500", bg: "bg-cyan-500/10" },
   ];
 

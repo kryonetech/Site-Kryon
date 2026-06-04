@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getLeads, updateLeadStatus } from "../../services/leadService";
+import { getLeads, updateLeadStatus, convertLeadToClient } from "../../services/leadService";
 import { Lead } from "../../types";
+import { UserCheck } from "lucide-react";
 
 const STATUS_OPTS = [
   "Novo", 
@@ -25,6 +26,7 @@ const STATUS_COLORS: Record<string, string> = {
 export default function AdminLeads() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
+  const [convertingId, setConvertingId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchLeads();
@@ -53,6 +55,23 @@ export default function AdminLeads() {
     }
   };
 
+  const handleConvert = async (lead: Lead) => {
+    if (!lead.id) return;
+    if (!window.confirm(`Tem certeza que deseja converter ${lead.nome} em Cliente?`)) return;
+    
+    try {
+      setConvertingId(lead.id);
+      await convertLeadToClient(lead);
+      alert("Lead convertido em Cliente com sucesso!");
+      fetchLeads();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao converter lead.");
+    } finally {
+      setConvertingId(null);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -67,20 +86,22 @@ export default function AdminLeads() {
                 <th className="px-6 py-4">Nome / Empresa</th>
                 <th className="px-6 py-4">Contato</th>
                 <th className="px-6 py-4">Projeto</th>
+                <th className="px-6 py-4">Origem</th>
                 <th className="px-6 py-4">Data</th>
                 <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4 text-center">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
                     Carregando leads...
                   </td>
                 </tr>
               ) : leads.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-slate-500">
+                  <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
                     Nenhum lead encontrado.
                   </td>
                 </tr>
@@ -99,6 +120,11 @@ export default function AdminLeads() {
                       {lead.tipoProjeto}
                     </td>
                     <td className="px-6 py-4">
+                      <span className="text-xs px-2 py-1 bg-slate-800 text-slate-300 rounded-md">
+                        {lead.origem || "Site"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
                       {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString('pt-BR') : '-'}
                     </td>
                     <td className="px-6 py-4">
@@ -111,6 +137,20 @@ export default function AdminLeads() {
                           <option key={opt} value={opt} className="bg-slate-900 text-white">{opt}</option>
                         ))}
                       </select>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <button 
+                        onClick={() => handleConvert(lead)}
+                        disabled={convertingId === lead.id || lead.status === 'Fechado' || lead.status === 'Perdido'}
+                        className="p-2 text-cyan-400 hover:bg-cyan-500/10 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed group relative"
+                        title={lead.status === 'Fechado' ? "Já convertido" : "Converter em Cliente"}
+                      >
+                        {convertingId === lead.id ? (
+                          <div className="w-5 h-5 rounded-full border-t border-cyan-400 animate-spin" />
+                        ) : (
+                          <UserCheck className="w-5 h-5" />
+                        )}
+                      </button>
                     </td>
                   </tr>
                 ))

@@ -2,7 +2,7 @@ import { collection, addDoc, getDocs, updateDoc, doc, serverTimestamp, query, or
 import { db } from '../lib/firebase';
 import { Lead } from '../types';
 
-enum OperationType {
+export enum OperationType {
   CREATE = 'create',
   UPDATE = 'update',
   DELETE = 'delete',
@@ -17,7 +17,7 @@ interface FirestoreErrorInfo {
   path: string | null;
 }
 
-function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
   const errInfo: FirestoreErrorInfo = {
     error: error instanceof Error ? error.message : String(error),
     operationType,
@@ -92,19 +92,48 @@ export const updateLeadStatus = async (id: string, status: string) => {
   }
 };
 
+import { createCliente } from './clientService';
+
+export const convertLeadToClient = async (lead: Lead) => {
+  try {
+    const clientId = await createCliente({
+      nome: lead.nome,
+      empresa: lead.empresa || "",
+      telefone: lead.telefone,
+      email: lead.email || "",
+      origemLeadId: lead.id || "",
+      status: "Ativo",
+      observacoes: `Lead convertido via Admin.\nMensagem original: ${lead.mensagem || ''}`
+    });
+    
+    if (clientId && lead.id) {
+      await updateLeadStatus(lead.id, 'Fechado');
+    }
+    
+    return clientId;
+  } catch (error) {
+    console.error("Erro ao converter lead para cliente:", error);
+    throw error;
+  }
+};
+
 export const getLeadStats = async () => {
+
   try {
     const leadsRef = collection(db, 'leads');
     const totalSnapshot = await getCountFromServer(leadsRef);
     const novosQuery = query(leadsRef, where('status', '==', 'Novo'));
     const novosSnapshot = await getCountFromServer(novosQuery);
+    const propostasQuery = query(leadsRef, where('status', '==', 'Proposta Enviada'));
+    const propostasSnapshot = await getCountFromServer(propostasQuery);
 
     return {
       totalLeads: totalSnapshot.data().count,
       leadsNovos: novosSnapshot.data().count,
+      propostasEnviadas: propostasSnapshot.data().count
     };
   } catch (error) {
     console.error("Error fetching stats fallback to 0");
-    return { totalLeads: 0, leadsNovos: 0 };
+    return { totalLeads: 0, leadsNovos: 0, propostasEnviadas: 0 };
   }
 };
