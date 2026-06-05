@@ -10,6 +10,8 @@ import AdminDashboard from "./admin/AdminDashboard";
 import AdminLeads from "./admin/AdminLeads";
 import AdminClientes from "./admin/AdminClientes";
 import AdminProjects from "./admin/AdminProjects";
+import AdminAITest from "./admin/AdminAITest";
+import { Bot } from "lucide-react";
 
 // Simple UI wrapper for Admin Area
 export default function AdminPanel() {
@@ -60,7 +62,8 @@ export default function AdminPanel() {
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { label: "Leads", href: "/admin/leads", icon: Users },
     { label: "Clientes", href: "/admin/clientes", icon: UserCheck },
-    { label: "Projetos", href: "/admin/projects", icon: FolderKanban }
+    { label: "Projetos", href: "/admin/projects", icon: FolderKanban },
+    { label: "Teste IA", href: "/admin/ai-test", icon: Bot }
   ];
 
   if (location.pathname === "/admin/login") {
@@ -181,6 +184,7 @@ export default function AdminPanel() {
             <Route path="leads" element={<AdminLeads />} />
             <Route path="clientes" element={<AdminClientes />} />
             <Route path="projects" element={<AdminProjects />} />
+            <Route path="ai-test" element={<AdminAITest />} />
           </Routes>
         </div>
       </main>
