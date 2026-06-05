@@ -1,8 +1,11 @@
-import React from "react";
-import { ArrowRight, ChevronDown, Rocket, CheckCircle2, ShieldCheck, Cpu } from "lucide-react";
-import { motion } from "motion/react";
+import React, { useState } from "react";
+import { ArrowRight, ChevronDown, Rocket, CheckCircle2, ShieldCheck, Cpu, Bot } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import KryonAIConsultant from "./KryonAIConsultant";
 
 export default function Hero() {
+  const [isAIConsultantOpen, setIsAIConsultantOpen] = useState(false);
+
   const handleScrollToSection = (selector: string) => {
     const target = document.querySelector(selector);
     if (target) {
@@ -69,11 +72,19 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
+          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto flex-wrap"
         >
           <button
+            onClick={() => setIsAIConsultantOpen(true)}
+            className="w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-800 border border-brand-primary/50 hover:bg-slate-700 hover:border-brand-primary text-white font-medium text-sm transition-all flex items-center justify-center gap-2.5 cursor-pointer shadow-[0_0_15px_rgba(0,180,255,0.2)] hover:shadow-[0_0_25px_rgba(0,180,255,0.4)]"
+          >
+            <Bot className="w-5 h-5 text-brand-primary" />
+            <span>Consultar IA Kryon</span>
+          </button>
+
+          <button
             onClick={() => handleScrollToSection("#simulador")}
-            className="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-primary hover:bg-brand-primary/90 text-white font-medium text-sm tracking-wide transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer shadow-[0_0_20px_rgba(0,102,255,0.4)] hover:shadow-[0_0_30px_rgba(0,102,255,0.6)] border border-brand-primary/50 group"
+            className="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-primary hover:bg-brand-primary/90 text-slate-900 font-semibold text-sm tracking-wide transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer shadow-[0_0_20px_rgba(0,102,255,0.4)] hover:shadow-[0_0_30px_rgba(0,102,255,0.6)] group"
           >
             <span>Solicitar Demonstração</span>
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -93,13 +104,51 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
           onClick={() => handleScrollToSection("#solucoes")}
-          className="mt-20 text-slate-500 hover:text-brand-accent transition-colors hidden md:flex flex-col items-center gap-2 cursor-pointer animate-bounce"
+          className="mt-16 text-slate-500 hover:text-brand-accent transition-colors hidden md:flex flex-col items-center gap-2 cursor-pointer animate-bounce"
           aria-label="Rolar para soluções"
         >
           <span className="text-[10px] font-mono uppercase tracking-widest text-slate-600">Descubra</span>
           <ChevronDown className="w-5 h-5" />
         </motion.button>
       </div>
+
+      {/* AI Consultant Modal Integration */}
+      <KryonAIConsultant 
+        isOpen={isAIConsultantOpen} 
+        onClose={() => setIsAIConsultantOpen(false)} 
+      />
+
+      {/* Floating Button for AI Consultant */}
+      <AnimatePresence>
+        {!isAIConsultantOpen && (
+          <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[990] flex items-center gap-3 select-none pointer-events-none">
+            <motion.div
+              initial={{ opacity: 0, x: 20, scale: 0.9 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 20, scale: 0.9 }}
+              transition={{ delay: 1.5, duration: 0.5 }}
+              onClick={() => setIsAIConsultantOpen(true)}
+              className="bg-slate-950/90 backdrop-blur-md border border-brand-primary/30 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-[0_4px_20px_rgba(0,180,255,0.15)] flex items-center gap-2 cursor-pointer pointer-events-auto hover:border-brand-primary/60 transition-colors"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-primary"></span>
+              </span>
+              <span>Dúvidas? Fale com nossa IA</span>
+            </motion.div>
+
+            <motion.button
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+              onClick={() => setIsAIConsultantOpen(true)}
+              className="w-14 h-14 bg-brand-primary rounded-full shadow-[0_0_20px_rgba(0,102,255,0.4)] flex items-center justify-center text-slate-900 hover:bg-brand-primary/90 transition-all hover:scale-110 pointer-events-auto"
+            >
+              <Bot className="w-7 h-7" />
+            </motion.button>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
