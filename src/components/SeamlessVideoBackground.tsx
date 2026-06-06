@@ -6,8 +6,11 @@ export default function SeamlessVideoBackground() {
   const video2Ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (video1Ref.current) video1Ref.current.playbackRate = 0.5;
-    if (video2Ref.current) video2Ref.current.playbackRate = 0.5;
+    // Aumentando a velocidade de reprodução para restaurar a fluidez (FPS)
+    // Valores muito baixos (como 0.5) fazem o vídeo parecer "travando" pois reduzem os quadros pela metade.
+    // 0.8 é um bom meio termo: levemente mais lento, mas ainda fluido. Para velocidade normal, use 1.0.
+    if (video1Ref.current) video1Ref.current.playbackRate = 0.8;
+    if (video2Ref.current) video2Ref.current.playbackRate = 0.8;
   }, []);
 
   useEffect(() => {
