@@ -7,6 +7,7 @@ import React, { Suspense } from "react";
 import { Routes, Route } from "react-router";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import SeamlessVideoBackground from "./components/SeamlessVideoBackground";
 
 // Lazy loaded components (Below the fold) to improve initial page load performance
 const Solutions = React.lazy(() => import("./components/Solutions"));
@@ -24,6 +25,7 @@ const ProtectedAdminRoute = React.lazy(() => import("./components/admin/Protecte
 function PublicLayout() {
   return (
     <>
+      <SeamlessVideoBackground />
       {/* Fixed Sticky Header */}
       <Header />
 
@@ -58,7 +60,7 @@ function PublicLayout() {
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-light font-sans selection:bg-brand-primary selection:text-white overflow-x-hidden antialiased">
+    <div className="min-h-screen text-brand-light font-sans selection:bg-brand-primary selection:text-white overflow-x-hidden antialiased">
       <Routes>
         <Route path="/" element={<PublicLayout />} />
         <Route 

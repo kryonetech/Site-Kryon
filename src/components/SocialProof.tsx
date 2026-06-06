@@ -11,7 +11,7 @@ const stats = [
 
 export default function SocialProof() {
   return (
-    <section className="relative py-20 px-4 bg-brand-surface border-y border-white/5 overflow-hidden">
+    <section className="relative py-20 px-4 bg-brand-surface/20 backdrop-blur-sm border-y border-white/5 overflow-hidden">
       {/* Glow Effects */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-brand-primary/5 blur-[120px] pointer-events-none" />
 

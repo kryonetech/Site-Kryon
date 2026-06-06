@@ -64,7 +64,7 @@ export default function WebsiteCreation() {
   ];
 
   return (
-    <section id="criacao-sites" className="py-24 md:py-32 px-4 bg-brand-bg relative overflow-hidden border-t border-slate-900">
+    <section id="criacao-sites" className="py-24 md:py-32 px-4 relative overflow-hidden border-t border-slate-900">
       {/* Premium background decorative elements */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-brand-primary/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-brand-accent/5 blur-[150px] rounded-full pointer-events-none" />

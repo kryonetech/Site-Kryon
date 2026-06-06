@@ -37,7 +37,7 @@ const solutions = [
 
 export default function Solutions() {
   return (
-    <section id="solucoes" className="py-24 px-4 bg-brand-bg relative overflow-hidden">
+    <section id="solucoes" className="py-24 px-4 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-brand-surface/30" />
       <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-brand-accent/5 blur-[120px] rounded-full pointer-events-none" />

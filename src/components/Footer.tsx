@@ -25,7 +25,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-brand-surface border-t border-white/5 text-slate-400 font-sans relative overflow-hidden">
+    <footer className="bg-brand-surface/20 backdrop-blur-md border-t border-white/5 text-slate-400 font-sans relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-brand-primary/5 blur-[100px] pointer-events-none rounded-full" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative z-10">
@@ -120,8 +120,28 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom Bar */}
+        {/* Technologies / Powered By */}
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-medium text-slate-500 uppercase tracking-widest">
+              Powered By
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-mono font-semibold text-slate-400 flex items-center gap-2 hover:bg-white/10 hover:text-white transition-colors cursor-default">
+              Google
+            </div>
+            <div className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-mono font-semibold text-slate-400 flex items-center gap-2 hover:bg-white/10 hover:text-white transition-colors cursor-default">
+              OpenAI
+            </div>
+            <div className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-mono font-semibold text-slate-400 flex items-center gap-2 hover:bg-white/10 hover:text-white transition-colors cursor-default">
+              WhatsApp
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-8 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="text-sm text-slate-500">
             &copy; {currentYear} KRYON E-TECH. Todos os direitos reservados. CNPJ: 00.000.000/0001-00.
           </div>

@@ -92,7 +92,7 @@ export default function CustomSolutions() {
   ];
 
   return (
-    <section id="solucoes-sob-medida" className="py-24 md:py-32 bg-brand-bg relative overflow-hidden border-t border-white/[0.03]">
+    <section id="solucoes-sob-medida" className="py-24 md:py-32 relative overflow-hidden border-t border-white/[0.03]">
       {/* Premium ambient light effects */}
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-brand-primary/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] bg-brand-accent/5 blur-[120px] rounded-full pointer-events-none" />

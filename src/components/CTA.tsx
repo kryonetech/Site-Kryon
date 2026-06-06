@@ -7,7 +7,7 @@ export default function CTA() {
   const { openModal } = useLeadModal();
 
   return (
-    <section className="relative py-32 px-4 bg-brand-bg overflow-hidden border-t border-white/5">
+    <section className="relative py-32 px-4 overflow-hidden border-t border-white/5">
       {/* Dynamic Backgrounds */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(0,102,255,0.08)_0%,transparent_100%)] pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-brand-primary to-transparent opacity-50" />

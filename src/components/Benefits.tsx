@@ -31,7 +31,7 @@ const benefitsList = [
 
 export default function Benefits() {
   return (
-    <section id="beneficios" className="py-24 px-4 bg-brand-surface relative overflow-hidden">
+    <section id="beneficios" className="py-24 px-4 bg-brand-surface/20 backdrop-blur-sm relative overflow-hidden">
       {/* Background Orbs */}
       <div className="absolute -left-40 top-40 w-96 h-96 bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute -right-40 bottom-40 w-96 h-96 bg-brand-accent/5 rounded-full blur-[100px] pointer-events-none" />

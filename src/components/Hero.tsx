@@ -20,16 +20,17 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-[calc(100vh-80px)] flex flex-col justify-center items-center overflow-hidden bg-brand-bg px-4 py-12 md:py-24">
+    <section className="relative min-h-[calc(100vh-80px)] flex flex-col justify-center items-center overflow-hidden px-4 py-12 md:py-24">
+
       {/* Visual cyber mesh backdrops and blue-glow ambient orbs */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] opacity-70" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] opacity-70 z-0" />
       
       {/* Light highlights / glow bubbles */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-[100%] bg-brand-primary/10 blur-[120px] pointer-events-none" />
-      <div className="absolute top-20 right-10 w-96 h-96 rounded-full bg-brand-accent/5 blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-[100%] bg-brand-primary/10 blur-[120px] pointer-events-none z-0" />
+      <div className="absolute top-20 right-10 w-96 h-96 rounded-full bg-brand-accent/5 blur-[100px] pointer-events-none z-0" />
 
       {/* Grid lines for depth */}
-      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-primary/20 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-primary/20 to-transparent z-0" />
 
       <div className="max-w-5xl mx-auto text-center relative z-10 flex flex-col items-center">
         {/* Badge */}
