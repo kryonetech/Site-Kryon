@@ -18,9 +18,32 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    function str(v, max) { return v is string && v.size() <= max; }
+    // Lead do site: qualquer visitante cria, mas só com os campos do formulário, tamanhos limitados e status inicial.
+    function isValidLead(d) {
+      return d.keys().hasOnly(['nome', 'empresa', 'telefone', 'email', 'tipoProjeto', 'mensagem', 'status', 'origem', 'ultimoContato', 'createdAt',
+                               'resumoConversa', 'segmento', 'objetivoProjeto', 'recursosDesejados', 'leadQualificado'])
+        && d.keys().hasAll(['nome', 'telefone', 'status', 'origem', 'createdAt'])
+        && str(d.nome, 120) && d.nome.size() >= 2
+        && str(d.telefone, 40)
+        && (!('empresa' in d) || str(d.empresa, 120))
+        && (!('email' in d) || str(d.email, 200))
+        && (!('tipoProjeto' in d) || d.tipoProjeto == null || str(d.tipoProjeto, 200))
+        && (!('mensagem' in d) || str(d.mensagem, 3000))
+        && (!('resumoConversa' in d) || d.resumoConversa == null || str(d.resumoConversa, 3000))
+        && (!('segmento' in d) || d.segmento == null || str(d.segmento, 120))
+        && (!('objetivoProjeto' in d) || d.objetivoProjeto == null || str(d.objetivoProjeto, 500))
+        && (!('recursosDesejados' in d) || d.recursosDesejados == null || str(d.recursosDesejados, 500))
+        && (!('leadQualificado' in d) || d.leadQualificado is bool)
+        && d.status == 'Novo'
+        && d.origem == 'Site'
+        && (!('ultimoContato' in d) || d.ultimoContato == null)
+        && d.createdAt == request.time;
+    }
+
     // Leads collection:
     match /leads/{leadId} {
-      allow create: if true;
+      allow create: if isValidLead(request.resource.data);
       allow read, update, delete: if isAdmin();
     }
 

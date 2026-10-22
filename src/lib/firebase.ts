@@ -17,9 +17,6 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-console.log("Firebase Auth Domain:", import.meta.env.VITE_FIREBASE_AUTH_DOMAIN);
-console.log("Firebase Project ID:", import.meta.env.VITE_FIREBASE_PROJECT_ID);
-console.log("Active Auth Domain used:", authDomain);
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);

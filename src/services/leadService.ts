@@ -35,7 +35,6 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
 
 export const createLead = async (data: Partial<Lead>) => {
   try {
-    console.log("Enviando lead para Firebase:", data);
     const leadsRef = collection(db, 'leads');
     const docRef = await addDoc(leadsRef, {
       nome: data.nome,
@@ -49,7 +48,6 @@ export const createLead = async (data: Partial<Lead>) => {
       ultimoContato: null,
       createdAt: serverTimestamp()
     });
-    console.log("Lead salvo com sucesso:", docRef.id);
     return docRef.id;
   } catch (error) {
     console.error("Erro real Firebase:", error);
