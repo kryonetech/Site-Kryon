@@ -7,3 +7,18 @@
   RewriteCond %{REQUEST_FILENAME} !-l
   RewriteRule . /index.html [L]
 </IfModule>
+
+# Cabeçalhos de segurança (Hostinger/Apache). Sem CSP restritiva para não quebrar Firebase, fontes e vídeo.
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  Header always set Content-Security-Policy "frame-ancestors 'none'; upgrade-insecure-requests"
+</IfModule>
+
+# Arquivos que nunca devem ser servidos
+<FilesMatch "^(\.env.*|\.git.*|package(-lock)?\.json|tsconfig\.json|server\.cjs|.*\.map)$">
+  Require all denied
+</FilesMatch>
